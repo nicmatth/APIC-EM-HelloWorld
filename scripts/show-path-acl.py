@@ -51,25 +51,25 @@ def show_interface(interface):
     '''
      "relevantAces": [
            {
-	    "destPortInfoList": [
-	        {
-	         "protocol": "tcp",
-	         "ports": "458"
-	        }
-	   ],
+        "destPortInfoList": [
+            {
+             "protocol": "tcp",
+             "ports": "458"
+            }
+       ],
     '''
     result = interface['interfaceName']
     if interface["aclName"] is not None:
         result += " (%s) block=%s" % (interface['aclName'], interface['blockType'])
     for ace in interface['relevantAces']:
 #        for destport in XXXXXXXXXXXXX
-#	    result += "(%s:%s)" % (destport['protocol'], destport['ports'])
+#        result += "(%s:%s)" % (destport['protocol'], destport['ports'])
         return result
-    
+
 def show_device(device):
     interfaces = device['interfaces']
     if interfaces[0]['ingress']:
-	ingress = interfaces[0]
+    ingress = interfaces[0]
         egress = interfaces[1]
     else:
         ingress = interfaces[1]
@@ -120,20 +120,20 @@ if res is not None:
     link_list = res['response'][0]['links']
     node_ids = [n['id'] for n in node_list]
     #print node_ids
-    
+
     link_ids = []
     for l in link_list:
         link_ids.append(l['startPortID'])
         link_ids.append(l['endPortID'])
     #print link_ids
-        
+
     acl_req = {
         "applicationId":"46de799b-7f51-4a5e-8d08-46e2e78ff619",
         "interfaceIds": link_ids, # list of ports/interfaces
         "sourceIp": SRC_IP,
         "destIp": DST_IP
         }
- 
+
     print json.dumps(acl_req, indent=4)
 
     print "RESULT\n******\n"
@@ -141,7 +141,7 @@ if res is not None:
     post_res = rest_call("/acl/trace", 'POST', acl_req)
     if post_res != None:
         print json.dumps(post_res['response'], indent=4, separators=(',', ': '))
-        
+
 # Step1: Look at the devices along the path ######
 #        print "\nPATH with ACL"
 #        print "%%%%%%%%%%%%%%"
